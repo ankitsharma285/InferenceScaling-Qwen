@@ -51,10 +51,6 @@ python3 main.py --temp 0 --samples 500
 python3 main.py --temp 0.7 --top_k 50 --top_p 0.95 --samples 500
 ```
 
-📚 Resources & Credits
+## Resources & Credits
+1. Reference Implementation: Inspired by Sebastian Raschka's "Reasoning from Scratch". [project](https://github.com/rasbt/reasoning-from-scratch/tree/main)
 
-    Reference Implementation: Inspired by Sebastian Raschka's "Reasoning from Scratch". [github](https://github.com/rasbt/reasoning-from-scratch/tree/main)
-
-    Architecture: Based on the Qwen Series.
-
-    Tools: Built using PyTorch and SymPy.
