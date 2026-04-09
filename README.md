@@ -39,14 +39,14 @@ Ensure you have the necessary dependencies installed:
 
 pip install torch sympy tokenizers
 
-Reproducing Results
-
+#### Reproducing Results
 Run the following commands to evaluate the engine on the full 500-sample dataset:
 
-1. Baseline Evaluation (Greedy Decoding)
-Bash
-
+**1. Baseline Evaluation (Greedy Decoding)**
+```bash
 python3 main.py --temp 0 --samples 500
+
+Reproducing Results
 
 2. Scaled Evaluation (Self-Consistency)
 Bash
