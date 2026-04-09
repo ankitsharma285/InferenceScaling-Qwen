@@ -1,5 +1,4 @@
 import re
-import torch
 from pathlib import Path
 from typing import Optional, List, Union
 from collections import Counter
@@ -10,7 +9,6 @@ from sympy.core.sympify import SympifyError
 from tokenize import TokenError
 
 # --- Constants & Patterns ---
-# Optimized Regex to catch decimals, fractions, and scientific notation
 RE_NUMBER = re.compile(r"-?(?:\d+/\d+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)")
 RE_SPECIAL_TOKENS = re.compile(r"<\|[^>]+?\|>")
 
@@ -98,19 +96,6 @@ class MathEvaluator:
         
         return text if fallback == "number_then_full" else ""
 
-    # @staticmethod
-    # def parse_to_sympy(expr: str):
-    #     """Safely parses a string into a SymPy expression for mathematical evaluation."""
-    #     try:
-    #         return spp.parse_expr(
-    #             expr,
-    #             transformations=(*spp.standard_transformations, 
-    #                              spp.implicit_multiplication_application),
-    #             evaluate=True
-    #         )
-    #     except (SympifyError, SyntaxError, TypeError, TokenError):
-    #         return None
-
     @staticmethod
     def parse_to_sympy(expr: str):
         """Safely parses a string into a SymPy expression, catching parser crashes."""
@@ -127,26 +112,6 @@ class MathEvaluator:
         except (SympifyError, SyntaxError, TypeError, TokenError, IndexError):
             return None
         
-    # @classmethod
-    # def is_equivalent(cls, ground_truth: str, prediction: str) -> bool:
-    #     """Determines if two math strings represent the same mathematical value."""
-    #     norm_gt = cls.normalize(ground_truth)
-    #     norm_pred = cls.normalize(prediction)
-        
-    #     if norm_gt == norm_pred:
-    #         return True
-            
-    #     sym_gt = cls.parse_to_sympy(norm_gt)
-    #     sym_pred = cls.parse_to_sympy(norm_pred)
-        
-    #     if sym_gt is not None and sym_pred is not None:
-    #         try:
-    #             # Core logic: if (A - B) simplifies to 0, they are equal
-    #             return simplify(sym_gt - sym_pred) == 0
-    #         except Exception:
-    #             pass
-    #     return False
-
     @classmethod
     def is_equivalent(cls, ground_truth: str, prediction: str) -> bool:
         """Determines if two math strings represent the same mathematical value."""

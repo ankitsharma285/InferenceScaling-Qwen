@@ -1,10 +1,7 @@
 from pathlib import Path
-from typing import Tuple, Literal
+from typing import Tuple, Literal, Optional, Dict, Any
 
 import torch
-import torch.nn.functional as F
-from typing import Optional, Generator, Dict, Any, List
-
 from collections import Counter
 
 
@@ -12,7 +9,6 @@ from model_lib.qwen3 import (
     download_qwen3_small,
     Qwen3Tokenizer,
     Qwen3Model,
-    KVCache,
     QWEN_CONFIG_06_B
 )
 
@@ -72,10 +68,6 @@ def initialize_model_pipeline(
 # Usage example:
 # model, tokenizer = initialize_model_pipeline("reasoning", device, enable_compilation=True)
 
-
-# Assuming these are your helper functions for parsing
-# from scaling_engine.utils import extract_answer_from_text
-
 def compute_consensus_reasoning(
     model: torch.nn.Module,
     tokenizer: Any,
@@ -109,7 +101,6 @@ def compute_consensus_reasoning(
             torch.manual_seed(base_seed + i)
 
         # Generate a reasoning path
-        # Using the unified streaming function we built previously
         raw_response = gf.stream_llm_response(
             model=model,
             tokenizer=tokenizer,
@@ -123,8 +114,6 @@ def compute_consensus_reasoning(
             top_p=top_p
         )
 
-        # Extract the final answer (e.g., the content inside \boxed{})
-        # 'extract_answer_from_text' would be your custom parsing utility
         parsed_answer = mp.MathEvaluator.get_final_candidate(raw_response)
         
         # Track results
@@ -156,7 +145,7 @@ def compute_consensus_reasoning(
             winners = [ans for ans, count in most_common if count == top_count]
             
             # If there's a clear winner, assign it. 
-            # If there's a tie, your project could return None or the first one.
+            # If there's a tie, you return None or the first one.
             final_decision = top_candidate if len(winners) == 1 else None
 
     return {

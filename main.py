@@ -38,7 +38,6 @@ def run_math500_evaluation(
     with output_path.open("w", encoding="utf-8") as f:
         for i, row in enumerate(dataset):
             # 1. Prepare Prompt
-            # 'format_inference_prompt' was our first rewrite
             base_prompt = utils.format_inference_prompt(row["problem"])
             full_prompt = base_prompt + prompt_suffix
 
@@ -69,7 +68,6 @@ def run_math500_evaluation(
                 correct_count += 1
 
             # 4. Find the full text for the chosen answer for logging
-            # (Matches the logic of your original script)
             full_text = ""
             for idx, p_ans in enumerate(consensus_results["parsed_candidates"]):
                 if p_ans == prediction:
@@ -110,7 +108,7 @@ def main():
     parser = argparse.ArgumentParser(description="LLM Inference-Time Scaling Evaluator")
     parser.add_argument("--variant", type=str, default="base", choices=["base", "reasoning"])
     parser.add_argument("--samples", type=int, default=10, help="Total examples to test")
-    parser.add_argument("--paths", type=int, default=3, help="Paths for Self-Consistency")
+    parser.add_argument("--paths", type=int, default=10, help="Paths for Self-Consistency")
     parser.add_argument("--temp", type=float, default=0.7)
     parser.add_argument("--top_k", type=int, default=50)
     parser.add_argument("--top_p", type=float, default=0.95)
