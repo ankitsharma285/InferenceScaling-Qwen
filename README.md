@@ -1,51 +1,62 @@
-# InferenceScaling-Qwen
-Summary: Exploring Inference-Time Scaling Laws on a 0.6B model. Boosted MATH-500 accuracy from 19.4% (Greedy) to 36.6% using stochastic path sampling (Top-K/Top-P) and Self-Consistency voting. Features a from-scratch KV-cached engine with symbolic post-processing for robust mathematical evaluation.
+# InferenceScale-Qwen
+**Scaling LLM Reasoning via Test-Time Compute**
 
-OverView:
+---
 
-InferenceScale-Qwen is an optimized, from-scratch implementation of a reasoning-focused inference engine. This project explores the Inference-Time Scaling Law, demonstrating that a compact 0.6B parameter model can achieve significantly higher reasoning performance by scaling test-time computation through stochastic path sampling and consensus-based majority voting.
-Project Overview
+### 🚀 Overview
 
-This repository features a custom-built Qwen inference stack designed for high-precision mathematical reasoning. By moving beyond fixed-compute greedy decoding and implementing Compute-Optimal Inference, the engine trades additional test-time computation for increased accuracy.
-Key Features
+**InferenceScale-Qwen** is a high-performance, from-scratch inference engine designed to explore **Inference-Time Scaling Laws**. By implementing compute-optimal strategies on a compact 0.6B parameter model, this project demonstrates that scaling test-time computation—through stochastic path sampling and consensus-based voting—can nearly double the reasoning accuracy of small-scale architectures.
 
-    From-Scratch Inference Engine: Custom implementation of the Qwen architecture [https://github.com/rasbt/reasoning-from-scratch/tree/main] with decoupled prefill and decoding phases. 
+The engine moves beyond standard greedy decoding to implement a robust **Self-Consistency (SC)** pipeline, achieving a significant performance leap on the rigorous **MATH-500** benchmark.
 
-    Optimized KV-Caching: Manual Key-Value cache management to ensure O(1) token generation latency.
+---
 
-    Consensus Engine: Implementation of the Self-Consistency (SC) strategy using stochastic path sampling (Top-K/Top-P) and majority voting.
+### ✨ Key Features
 
-    Symbolic Evaluation: A robust post-processing pipeline using SymPy for symbolic verification, ensuring that mathematically equivalent answers (e.g., x+1 vs 1+x) are graded correctly.
+* **Custom Inference Engine:** Built from the ground up based on the Qwen architecture with specialized, decoupled prefill and decoding phases.
+* **Performance Optimization:** Features manual **KV-Cache management** to maintain $O(1)$ token generation latency and support high-throughput sampling.
+* **Advanced Consensus Logic:** Integrates a consensus engine that leverages stochastic **Top-K/Top-P sampling** to generate multiple reasoning paths and identify the most frequent solution.
+* **Symbolic Mathematical Verification:** Utilizes **SymPy** for rigorous grading; the evaluator recognizes mathematical equivalence (e.g., $x+1 \equiv 1+x$), providing a more accurate assessment than standard string matching.
+* **Production-Grade Robustness:** Implements "crash-proof" parsing with robust exception handling for unbalanced LaTeX or malformed mathematical expressions typical of high-temperature sampling.
 
-    Crash-Proof Parsing: Robust exception handling for malformed LaTeX or unbalanced mathematical expressions, essential for high-temperature sampling.
+---
 
-Performance Benchmarks (MATH-500)
+### 📊 Performance Benchmarks (MATH-500)
 
-The following table demonstrates the impact of Inference-Time Scaling on a 0.6B parameter model. By scaling the number of reasoning paths and applying consensus logic, accuracy improved by nearly 90% over the baseline.
-Mode	Decoding Strategy	Top-K	Top-P	Accuracy	Total Time
-Base Model	Greedy Decoding	N/A	N/A	19.40%	177.53 mins
-Base Model	Self-Consistency	50	0.95	36.90%	292.34 mins
+By scaling the number of reasoning paths and applying consensus logic, the model achieved an **~89.7% relative improvement** in accuracy over the baseline.
 
-Usage
-Prerequisites
-Bash
+| Mode | Decoding Strategy | Top-K | Top-P | **Accuracy** | **Total Time** |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Baseline** | Greedy Decoding | N/A | N/A | **19.40%** | 177.53 mins |
+| **Scaled** | **Self-Consistency** | 50 | 0.95 | **36.90%** | 292.34 mins |
+
+---
+
+### 🛠️ Usage
+
+#### Installation
+Ensure you have the necessary dependencies installed:
 
 pip install torch sympy tokenizers
 
-Running the Evaluation
+Reproducing Results
 
-To reproduce the benchmarks on the full MATH-500 dataset, use the following commands:
+Run the following commands to evaluate the engine on the full 500-sample dataset:
 
-1. Greedy Decoding (Baseline)
+1. Baseline Evaluation (Greedy Decoding)
 Bash
 
 python3 main.py --temp 0 --samples 500
 
-2. Self-Consistency (Inference Scaling)
+2. Scaled Evaluation (Self-Consistency)
 Bash
 
 python3 main.py --temp 0.7 --top_k 50 --top_p 0.95 --samples 500
 
-Resources & Acknowledgments
+📚 Resources & Credits
 
-Sebastian Raschka: https://github.com/rasbt/reasoning-from-scratch/tree/main
+    Reference Implementation: Inspired by Sebastian Raschka's "Reasoning from Scratch".
+
+    Architecture: Based on the Qwen Series.
+
+    Tools: Built using PyTorch and SymPy.
