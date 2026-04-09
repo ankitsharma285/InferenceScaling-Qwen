@@ -13,8 +13,6 @@ The engine moves beyond standard greedy decoding to implement a robust **Self-Co
 
 ### ✨ Key Features
 
-* **Custom Inference Engine:** Built from the ground up based on the Qwen architecture with specialized, decoupled prefill and decoding phases.
-* **Performance Optimization:** Features manual **KV-Cache management** to maintain $O(1)$ token generation latency and support high-throughput sampling.
 * **Advanced Consensus Logic:** Integrates a consensus engine that leverages stochastic **Top-K/Top-P sampling** to generate multiple reasoning paths and identify the most frequent solution.
 * **Symbolic Mathematical Verification:** Utilizes **SymPy** for rigorous grading; the evaluator recognizes mathematical equivalence (e.g., $x+1 \equiv 1+x$), providing a more accurate assessment than standard string matching.
 * **Production-Grade Robustness:** Implements "crash-proof" parsing with robust exception handling for unbalanced LaTeX or malformed mathematical expressions typical of high-temperature sampling.
@@ -54,7 +52,7 @@ python3 main.py --temp 0.7 --top_k 50 --top_p 0.95 --samples 500
 
 📚 Resources & Credits
 
-    Reference Implementation: Inspired by Sebastian Raschka's "Reasoning from Scratch".
+    Reference Implementation: Inspired by Sebastian Raschka's "Reasoning from Scratch". [github] (https://github.com/rasbt/reasoning-from-scratch/tree/main)
 
     Architecture: Based on the Qwen Series.
 
