@@ -23,11 +23,11 @@ The engine moves beyond standard greedy decoding to implement a robust **Self-Co
 
 By scaling the number of reasoning paths and applying consensus logic, the model achieved an **~89.7% relative improvement** in accuracy over the baseline.
 
-| Mode | Decoding Strategy | Path | Top-K | Top-P | **Accuracy** | **Total Time** |
+| Model | Decoding Strategy | Path | Top-K | Top-P | **Accuracy** | **Total Time** |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Baseline** | Greedy Decoding | N/A| N/A | N/A | **19.40%** | 177.53 mins |
-| **Scaled** | **Self-Consistency** | 3 | 50 | 0.95 | **36.90%** | 292.34 mins |
-| **Scaled** | **Self-Consistency** | 10 | 50 | 0.95 | **37.20%** | 846.12 mins |
+| **Base** | Greedy Decoding | N/A| N/A | N/A | **19.40%** | 177.53 mins |
+| **Base** | **Self-Consistency** | 3 | 50 | 0.95 | **36.90%** | 292.34 mins |
+| **Base** | **Self-Consistency** | 10 | 50 | 0.95 | **37.20%** | 846.12 mins |
 
 ---
 
