@@ -1,0 +1,19 @@
+# --- Machine Learning Artifacts ---
+*.pth
+*.pt
+*.bin
+*.safetensors
+checkpoints/
+results/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.ipynb_checkpoints
+
+# --- OS ---
+.DS_Store
+Thumbs.db
