@@ -47,7 +47,7 @@ Run the following commands to evaluate the engine on the full 500-sample dataset
 python3 main.py --temp 0 --samples 500 
 ```
 
-2. Scaled Evaluation (Self-Consistency)
+**2. Scaled Evaluation (Self-Consistency)**
 ```bash
 
 python3 main.py --temp 0.7 --top_k 50 --top_p 0.95 --samples 500
