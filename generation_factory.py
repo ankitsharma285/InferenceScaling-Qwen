@@ -109,6 +109,11 @@ def generate_with_sampling_v2(
     device = input_ids.device
     cache = KVCache(n_layers=model.cfg["n_layers"])
     model.reset_kv_cache()
+
+    # ─── ADDED FOR H100 CUDA GRAPHS (PREFILL) ───────────────────────────
+    if hasattr(torch, "compiler") and hasattr(torch.compiler, "cudagraph_mark_step_begin"):
+        torch.compiler.cudagraph_mark_step_begin()
+    # ────────────────────────────────────────────────────────────────────
     
     # Prefill phase
     logits = model(input_ids, cache = cache)[:, -1, :] 
@@ -139,5 +144,10 @@ def generate_with_sampling_v2(
 
         yield next_token
 
+        # ─── ADDED FOR H100 CUDA GRAPHS (DECODING LOOP) ─────────────────────
+        if hasattr(torch, "compiler") and hasattr(torch.compiler, "cudagraph_mark_step_begin"):
+            torch.compiler.cudagraph_mark_step_begin()
+        # ────────────────────────────────────────────────────────────────────
+        
         # Decoding phase: pass only the new token to utilize KV Cache
         logits = model(next_token, cache = cache)[:, -1, :] 

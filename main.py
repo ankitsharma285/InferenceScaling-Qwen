@@ -33,6 +33,7 @@ def run_math500_evaluation(
     print(f"Configuration: Paths={num_paths}, Temp={temperature}, EarlyExit={enable_early_exit}")
     
     correct_count = 0
+    total_paths_explored = 0
     start_time = time.perf_counter()
 
     with output_path.open("w", encoding="utf-8") as f:
@@ -74,6 +75,7 @@ def run_math500_evaluation(
                     full_text = consensus_results["all_paths"][idx]
                     break
 
+            total_paths_explored += consensus_results["explore_path"]            
             # 5. Save Record
             record = {
                 "id": i,
@@ -103,12 +105,14 @@ def run_math500_evaluation(
     print(f"\n{'='*30}\nFinal Accuracy: {final_acc:.2f}%")
     print(f"Total Time: {total_time/60:.2f} mins")
     print(f"Results saved to: {output_path}")
+    total_possible_paths = len(dataset) * num_paths
+    print(f"Total paths explored: {total_paths_explored} out of possible {total_possible_paths}.")
 
 def main():
     parser = argparse.ArgumentParser(description="LLM Inference-Time Scaling Evaluator")
     parser.add_argument("--variant", type=str, default="base", choices=["base", "reasoning"])
     parser.add_argument("--samples", type=int, default=10, help="Total examples to test")
-    parser.add_argument("--paths", type=int, default=10, help="Paths for Self-Consistency")
+    parser.add_argument("--paths", type=int, default=3, help="Paths for Self-Consistency")
     parser.add_argument("--temp", type=float, default=0.7)
     parser.add_argument("--top_k", type=int, default=50)
     parser.add_argument("--top_p", type=float, default=0.95)

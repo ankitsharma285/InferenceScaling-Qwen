@@ -61,7 +61,7 @@ def initialize_model_pipeline(
         print("Optimizing model with torch.compile...")
         # These flags are helpful for inference-heavy scaling pipelines
         torch._dynamo.config.allow_unspec_int_on_nn_module = True
-        model = torch.compile(model, mode="reduce-overhead")
+        model = torch.compile(model, mode="default")
 
     return model, tokenizer
 
@@ -94,6 +94,7 @@ def compute_consensus_reasoning(
     
     final_decision = None
     consensus_met = False
+    explore_path = 0 
 
     for i in range(num_paths):
         # Ensure stochastic diversity across paths
@@ -129,6 +130,7 @@ def compute_consensus_reasoning(
         # If one answer already has more than half the total possible votes, 
         # further sampling won't change the majority winner.
         if enable_early_exit and frequency_map[parsed_answer] > (num_paths / 2):
+            explore_path = i + 1
             final_decision = parsed_answer
             consensus_met = True
             if show_logs:
@@ -137,6 +139,7 @@ def compute_consensus_reasoning(
 
     # Resolve final answer if early exit wasn't triggered
     if not consensus_met:
+        explore_path = num_paths
         most_common = frequency_map.most_common()
         if most_common:
             top_candidate, top_count = most_common[0]
@@ -154,5 +157,6 @@ def compute_consensus_reasoning(
         "parsed_candidates": extracted_candidates,
         "distribution": dict(frequency_map),
         "path_indices": path_groups,
-        "samples_taken": len(path_logs)
+        "samples_taken": len(path_logs),
+        "explore_path": explore_path
     }

@@ -312,7 +312,7 @@ def apply_rope(x, cos, sin, offset=0):
     x_rotated = (x * cos) + (rotated * sin)
 
     # It's ok to use lower-precision after applying cos and sin rotation
-    return x_rotated.to(dtype=x.dtype)
+    return x_rotated.to(dtype=x.dtype).clone()
 
 
 class RMSNorm(nn.Module):
