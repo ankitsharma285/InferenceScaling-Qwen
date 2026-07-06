@@ -12,6 +12,7 @@ This project presents a systematic empirical study of inference-time scaling on 
 Our experiments show that increasing inference-time compute substantially improves mathematical reasoning, achieving a 2.43× improvement in accuracy (17.6% → 42.8%) over greedy decoding. The analysis further reveals that moderate stochasticity consistently produces stronger consensus, while performance gains diminish beyond moderate reasoning budgets. Difficulty-wise evaluation demonstrates that additional reasoning paths primarily benefit medium- and high-complexity problems, suggesting opportunities for adaptive compute allocation during inference.
 
 Together, these findings provide practical guidelines for designing efficient inference-time reasoning systems and contribute empirical insights into the scaling behavior of Self-Consistency decoding.
+
 ---
 ### ✨ Motivation 
 Reasoning models have shifted the scaling paradigm from
